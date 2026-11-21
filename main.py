@@ -584,13 +584,36 @@ def health():
 @app.get('/api/ai-status')
 def ai_status(user=Depends(current_user)):
     try:
-        names = [model.id for model in client.models.list().data]
-        return {'connected': True, 'provider': 'ollama', 'text_model': TEXT_MODEL,
-                'vision_model': VISION_MODEL, 'text_model_available': TEXT_MODEL in names,
-                'vision_model_available': VISION_MODEL in names, 'available_models': names}
+        models = client.models.list()
+
+        names = [
+            item.id.removeprefix("models/")
+            for item in models.data
+        ]
+
+        text_ok = TEXT_MODEL.removeprefix("models/") in names
+        vision_ok = VISION_MODEL.removeprefix("models/") in names
+
+        return {
+            "connected": True,
+            "provider": "gemini",
+            "text_model": TEXT_MODEL,
+            "vision_model": VISION_MODEL,
+            "text_model_available": text_ok,
+            "vision_model_available": vision_ok,
+            "available_models": names
+        }
+
     except Exception as exc:
-        return {'connected': False, 'provider': 'ollama', 'text_model': TEXT_MODEL,
-                'vision_model': VISION_MODEL, 'error': str(exc)[:160]}
+        log.exception("Gemini status check failed")
+
+        return {
+            "connected": False,
+            "provider": "gemini",
+            "text_model_available": False,
+            "vision_model_available": False,
+            "error": str(exc)[:160]
+        }
 
 if STATIC.exists():
     app.mount('/static', StaticFiles(directory=str(STATIC)), name='static')
