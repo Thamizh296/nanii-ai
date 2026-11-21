@@ -1,0 +1,34 @@
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Local database
+nanii.db
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Local cache and generated files
+.nanii_cache/
+static/generated/
+uploads/
+temp/
+tmp/
+
+# Editor and system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

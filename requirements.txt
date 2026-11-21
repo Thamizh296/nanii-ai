@@ -1,0 +1,15 @@
+
+fastapi
+uvicorn
+python-multipart
+python-dotenv
+openai
+PyJWT
+Pillow
+PyMuPDF
+pytesseract
+python-pptx
+reportlab
+yt-dlp
+youtube-transcript-api
+opencv-python-headless
